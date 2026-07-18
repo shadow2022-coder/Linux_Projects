@@ -5,3 +5,6 @@ data/
 downloads/
 __pycache__/
 .venv/
+model_weights.bin
+web_request.txt
+packaged/

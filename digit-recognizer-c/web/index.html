@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C CNN Digit Recognizer</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">C-powered CNN</p>
+      <h1>Draw a digit and let the C model guess it.</h1>
+      <p class="lede">
+        The backend, training loop, saved weights, HTTP server, and inference path all run in C.
+      </p>
+    </section>
+
+    <section class="workspace">
+      <div class="canvas-card">
+        <canvas id="draw-canvas" width="280" height="280" aria-label="Digit drawing canvas"></canvas>
+        <div class="controls">
+          <button id="predict-btn">Predict</button>
+          <button id="clear-btn" class="ghost">Clear</button>
+          <button id="sample-btn" class="ghost">Load Sample 7</button>
+        </div>
+      </div>
+
+      <div class="results-card">
+        <div class="prediction">
+          <span class="label">Prediction</span>
+          <span id="predicted-digit" class="digit">?</span>
+          <span id="confidence" class="confidence">Confidence: --</span>
+        </div>
+        <div id="bars" class="bars"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

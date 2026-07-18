@@ -7,9 +7,10 @@ TARGET := digitrecg
 SRC := main.c arena.c prng.c
 OBJ := $(SRC:.c=.o)
 DATA_DIR ?= data
+WEIGHTS ?= model_weights.bin
 PACKAGE_DIR := packaged/digit-recognizer-c
 
-.PHONY: all clean run prepare-data package
+.PHONY: all clean run train predict serve prepare-data package
 
 all: $(TARGET)
 
@@ -20,7 +21,16 @@ $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 run: $(TARGET)
-	./$(TARGET) --data-dir $(DATA_DIR)
+	./$(TARGET) train --data-dir $(DATA_DIR) --weights $(WEIGHTS)
+
+train: $(TARGET)
+	./$(TARGET) train --data-dir $(DATA_DIR) --weights $(WEIGHTS)
+
+predict: $(TARGET)
+	./$(TARGET) predict --data-dir $(DATA_DIR) --weights $(WEIGHTS)
+
+serve: $(TARGET)
+	./$(TARGET) serve --weights $(WEIGHTS)
 
 prepare-data:
 	python3 mnist.py --output-dir $(DATA_DIR)
@@ -28,6 +38,7 @@ prepare-data:
 package:
 	mkdir -p $(PACKAGE_DIR)
 	cp README.md Makefile .gitignore base.h arena.h arena.c prng.h prng.c main.c mnist.py $(PACKAGE_DIR)/
+	cp -R web $(PACKAGE_DIR)/
 
 clean:
 	rm -f $(TARGET) $(OBJ)

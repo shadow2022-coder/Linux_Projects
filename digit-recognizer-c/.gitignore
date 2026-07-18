@@ -1,0 +1,7 @@
+digitrecg
+*.o
+*.mat
+data/
+downloads/
+__pycache__/
+.venv/

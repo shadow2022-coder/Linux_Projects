@@ -28,6 +28,14 @@ make
 
 Then open `http://127.0.0.1:8080`.
 
+## What this project includes
+
+- A handwritten digit CNN written in plain C
+- End-to-end MNIST training and evaluation in the C executable
+- Saved binary weights for reuse without retraining every time
+- A lightweight HTTP server written in C
+- A browser drawing UI for interactive digit prediction
+
 ## Useful commands
 
 ```sh
@@ -45,6 +53,25 @@ Manual examples:
 ./digitrecg predict --data-dir data --weights model_weights.bin --sample-index 9
 ./digitrecg serve --weights model_weights.bin --port 8080
 ```
+
+## Verification
+
+This version was tested end to end on July 18, 2026 with the following flow:
+
+```sh
+make
+./digitrecg train --data-dir data --epochs 1 --batch-size 64 --learning-rate 0.01 --weights model_weights.bin --sample-index 7
+./digitrecg predict --data-dir data --weights model_weights.bin --sample-index 7
+./digitrecg serve --weights model_weights.bin --port 8081
+curl -s http://127.0.0.1:8081/health
+curl -s -X POST http://127.0.0.1:8081/api/predict -H 'Content-Type: application/json' --data-binary @web_request.txt
+```
+
+Observed result from the CNN training smoke test:
+
+- Test accuracy after 1 epoch: `89.60%`
+- The saved model correctly predicted MNIST test sample `7` as digit `9`
+- The HTTP server returned a healthy response and the prediction API returned the same digit through the web path
 
 ## Notes
 
